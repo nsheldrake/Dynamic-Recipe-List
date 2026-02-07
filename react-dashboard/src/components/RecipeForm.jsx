@@ -15,7 +15,8 @@ function RecipeForm() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        message: '',
+        ingredients: '',
+        instructions: '',
     });
 
     //Error object: helps disable button (on errors), values for error messages
@@ -44,13 +45,14 @@ function RecipeForm() {
         const newErrors = {};
 
         newErrors.name = validateRequired('name', formData.name);
-        newErrors.email = validateRequired('email', formData.email) || validateEmail('email', formData.email);
-        newErrors.messahe = validateRequired('message', formData.message);
+        newErrors.email = validateRequired('email', formData.email) || validateEmail(formData.email);
+        newErrors.ingredients = validateRequired('ingredients', formData.ingredients);
+        newErrors.instructions = validateRequired('instructions', formData.instructions);
 
         setErrors(newErrors);
 
         //Form is valid only if no errors
-        // Object.keys(newErrors) get all field names (name, email, message)
+        // Object.keys(newErrors) get all field names (name, email, ingredients, instructions)
         // filter(...) keeps only the fields that actually contain an error
         // If the number of remaining errors is 0, the form is valid
         return Object.keys(newErrors).filter(key => newErrors[key]).length === 0;
@@ -115,7 +117,7 @@ function RecipeForm() {
             clearFormDraft();
 
             //Reset from after success
-            setFormData( {name: '', email: '', message: ''});
+            setFormData( {name: '', email: '', ingredients: '', instructions: ''});
             setErrors({});
 
         }catch(err){
@@ -138,7 +140,7 @@ function RecipeForm() {
             }}
         >
 
-            <h2>Contact Us</h2>
+            <h2>Submission Form</h2>
 
             { /* Name field*/ }
             <div style={{ marginBottom: '1rem' }}>
@@ -149,14 +151,14 @@ function RecipeForm() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem'}}
+                    style={{width: '100%', padding: '0.5rem', marginTop: '0.25rem'}}
                 />
                 {errors.name && <span style={{color: 'red', fontSize: '0.9rem'}}>{errors.name}</span>}
             </div>
 
             { /* Email field*/ }
             <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="email">Eamil:</label>
+                <label htmlFor="email">Email:</label>
                 <input
                     type="email"
                     id="email"
@@ -168,17 +170,30 @@ function RecipeForm() {
                 {errors.email && <span style={{color: 'red', fontSize: '0.9rem'}}>{errors.email}</span>}
             </div>
 
-            { /* Message field*/ }
+            { /* Ingredients field*/ }
             <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="message">Message:</label>
+                <label htmlFor="ingredients">Ingredients:</label>
                 <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
+                    id="ingredients"
+                    name="ingredients"
+                    value={formData.ingredients}
                     onChange={handleChange}
                     style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem'}}
                 />
-                {errors.message && <span style={{color: 'red', fontSize: '0.9rem'}}>{errors.message}</span>}
+                {errors.ingredients && <span style={{color: 'red', fontSize: '0.9rem'}}>{errors.ingredients}</span>}
+            </div>
+
+            { /* Instruction field*/ }
+            <div style={{ marginBottom: '1rem' }}>
+                <label htmlFor="instructions">Instructions:</label>
+                <textarea
+                    id="instructions"
+                    name="instructions"
+                    value={formData.instructions}
+                    onChange={handleChange}
+                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem'}}
+                />
+                {errors.instructions && <span style={{color: 'red', fontSize: '0.9rem'}}>{errors.instructions}</span>}
             </div>
 
             { /*Submit button*/ }
@@ -194,7 +209,7 @@ function RecipeForm() {
                     cursor: status === 'submitting' ? 'not-allowed' : 'pointer',
                 }}
             >
-                {status === 'submitting' ? 'Sending...' : 'Submit Message'}
+                {status === 'submitting' ? 'Sending...' : 'Submit Recipe'}
 
             </button>
 
@@ -202,7 +217,7 @@ function RecipeForm() {
             {submitMessage && (
                 <p style={{
                     marginTop: '1rem',
-                    color: status === 'success' ? green : 'red',
+                    color: status === 'success' ? 'green' : 'red',
                     fontWeight: 'bold',
                 }}>
                     {submitMessage}

@@ -1,7 +1,7 @@
 // Select the container where the cards will go
-const container = document.getElementById('team-container');
+const container = document.getElementById('recipe-container');
 
-fetch('data/teams.json')
+fetch('data/recipe.json')
     .then(response => {
         if(!response.ok){
             throw new Error('Network response was not ok.');
@@ -18,8 +18,8 @@ fetch('data/teams.json')
 
             card.innerHTML = `
             <h3>${member.name} </h3>
-            <p class="role">${member.role}</p>
-            <p>${member.bio}</p>
+            <p>${member.ingredients}</p>
+            <p>${member.instructions}</p>
             `;
 
             // Attach document from member to DOM
@@ -28,6 +28,6 @@ fetch('data/teams.json')
 
     })
 .catch(error =>{
-    console.error('Error loading team data', error);
-    container.innerHTML = '<p style="color:red; text-align: center">Failed to load Team data</p>'
+    console.error('Error loading recipe data', error);
+    container.innerHTML = '<p style="color:red; text-align: center">Failed to load Recipe data</p>'
 });

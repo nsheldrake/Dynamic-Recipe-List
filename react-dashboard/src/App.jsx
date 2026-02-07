@@ -15,18 +15,18 @@ function App() {
 
             { /* Simple Header */}
             <header>
-                <h1>Personal Dashboard (React)</h1>
+                <h1>Recipe List Display</h1>
             </header>
 
-            { /* Team Section */}
+            { /* Recipe Section */}
             <section>
-                <h2>Team Members</h2>
-                <RecipeList/>           { /* Renders dynamic team cards */}
+                <h2>Recipes</h2>
+                <RecipeList/>           { /* Renders dynamic recipe cards */}
             </section>
 
             { /* Form Section */}
             <section>
-                <h2>Contact Form</h2>
+                <h2>Submit Recipe</h2>
                 <RecipeForm/>        { /* Handles input, validation, and submission */}
             </section>
 
