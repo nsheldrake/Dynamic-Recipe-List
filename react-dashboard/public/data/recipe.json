@@ -1,0 +1,212 @@
+[
+  {
+    "id": "01",
+    "name": "Chocolate Chip Cookies",
+    "ingredients": [
+      "Flour, ",
+      "Sugar, ",
+      "Brown sugar, ",
+      "Butter, ",
+      "Eggs, ",
+      "Vanilla extract, ",
+      "Baking soda, ",
+      "Salt, ",
+      "Chocolate chips "
+    ],
+    "instructions": "Preheat oven to 350°F. Cream butter and sugars together, then mix in eggs and vanilla. Combine dry ingredients and gradually add to wet mixture. Stir in chocolate chips. Scoop onto baking sheet and bake for 10–12 minutes.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "02",
+    "name": "Banana Bread",
+    "ingredients": [
+      "Ripe bananas, ",
+      "Flour, ",
+      "Sugar, ",
+      "Butter, ",
+      "Eggs, ",
+      "Baking soda, ",
+      "Salt, ",
+      "Vanilla extract "
+    ],
+    "instructions": "Preheat oven to 350°F. Mash bananas and mix with melted butter, sugar, eggs, and vanilla. Stir in dry ingredients. Pour into a loaf pan and bake for 50–60 minutes.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "03",
+    "name": "Pizza",
+    "ingredients": [
+      "Pizza dough, ",
+      "Tomato sauce, ",
+      "Mozzarella cheese, ",
+      "Olive oil, ",
+      "Toppings of choice "
+    ],
+    "instructions": "Preheat oven to 475°F. Roll out dough, spread tomato sauce, add cheese and toppings. Drizzle with olive oil and bake for 12–15 minutes until crust is golden.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "04",
+    "name": "Chicken Sandwich",
+    "ingredients": [
+      "Chicken breast, ",
+      "Burger buns, ",
+      "Lettuce, ",
+      "Tomato, ",
+      "Mayonnaise, ",
+      "Salt, ",
+      "Pepper, ",
+      "Oil "
+    ],
+    "instructions": "Season chicken with salt and pepper and cook in a pan until fully cooked. Toast buns lightly, assemble sandwich with chicken, lettuce, tomato, and mayonnaise.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "05",
+    "name": "Pasta",
+    "ingredients": [
+      "Pasta, ",
+      "Tomato sauce, ",
+      "Garlic, ",
+      "Olive oil, ",
+      "Salt, ",
+      "Parmesan cheese "
+    ],
+    "instructions": "Cook pasta according to package instructions. Sauté garlic in olive oil, add tomato sauce and simmer. Combine with pasta and top with parmesan cheese.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "06",
+    "name": "Grilled Cheese",
+    "ingredients": [
+      "Bread, ",
+      "Cheddar cheese, ",
+      "Butter "
+    ],
+    "instructions": "Butter bread slices and place cheese between them. Cook in a pan over medium heat until golden brown on both sides.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "07",
+    "name": "Pancakes",
+    "ingredients": [
+      "Flour, ",
+      "Milk, ",
+      "Eggs, ",
+      "Baking powder, ",
+      "Sugar, ",
+      "Butter, ",
+      "Salt "
+    ],
+    "instructions": "Mix dry ingredients, then add milk and eggs. Stir until smooth. Pour batter onto a hot pan and cook until bubbles form, then flip.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "08",
+    "name": "Omelette",
+    "ingredients": [
+      "Eggs, ",
+      "Milk, ",
+      "Salt, ",
+      "Pepper, ",
+      "Cheese, ",
+      "Butter "
+    ],
+    "instructions": "Beat eggs with milk, salt, and pepper. Cook in buttered pan, add cheese, fold, and cook until set.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "09",
+    "name": "Beef Tacos",
+    "ingredients": [
+      "Ground beef, ",
+      "Taco shells, ",
+      "Taco seasoning, ",
+      "Lettuce, ",
+      "Cheese, ",
+      "Tomato "
+    ],
+    "instructions": "Cook ground beef with seasoning. Fill taco shells with beef and toppings.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "10",
+    "name": "Caesar Salad",
+    "ingredients": [
+      "Romaine lettuce, ",
+      "Croutons, ",
+      "Parmesan cheese, ",
+      "Caesar dressing "
+    ],
+    "instructions": "Toss lettuce with dressing, add croutons and parmesan cheese before serving.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "11",
+    "name": "Fried Rice",
+    "ingredients": [
+      "Cooked rice, ",
+      "Eggs, ",
+      "Soy sauce, ",
+      "Green onions, ",
+      "Oil "
+    ],
+    "instructions": "Cook eggs in oil, add rice and soy sauce, stir-fry until heated through. Add green onions before serving.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "12",
+    "name": "Hamburger",
+    "ingredients": [
+      "Ground beef, ",
+      "Burger buns, ",
+      "Lettuce, ",
+      "Tomato, ",
+      "Cheese, ",
+      "Salt, ",
+      "Pepper "
+    ],
+    "instructions": "Season beef and form patties. Cook until desired doneness. Assemble burger with toppings.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "13",
+    "name": "Mac and Cheese",
+    "ingredients": [
+      "Macaroni, ",
+      "Cheddar cheese, ",
+      "Milk, ",
+      "Butter, ",
+      "Flour "
+    ],
+    "instructions": "Cook macaroni. Make cheese sauce with butter, flour, milk, and cheese. Combine with pasta.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "14",
+    "name": "French Toast",
+    "ingredients": [
+      "Bread, ",
+      "Eggs, ",
+      "Milk, ",
+      "Cinnamon, ",
+      "Sugar, ",
+      "Butter "
+    ],
+    "instructions": "Dip bread in egg mixture and cook in buttered pan until golden brown.",
+    "dateAdded": "2026-02-28"
+  },
+  {
+    "id": "15",
+    "name": "Chicken Stir Fry",
+    "ingredients": [
+      "Chicken breast, ",
+      "Soy sauce, ",
+      "Garlic, ",
+      "Mixed vegetables, ",
+      "Oil "
+    ],
+    "instructions": "Cook chicken in oil, add vegetables and garlic, stir in soy sauce and cook until vegetables are tender.",
+    "dateAdded": "2026-02-28"
+  }
+]
