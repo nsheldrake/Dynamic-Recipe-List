@@ -6,6 +6,15 @@ import RecipeList from "./components/RecipeList.jsx";
 import RecipeForm from "./components/RecipeForm.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from "react";
+import Navbar from "./components/Navbar.jsx";
+import {Route, Routes} from "react-router-dom";
+import Home from "./views/Home.jsx";
+import RecipeDetail from "./views/RecipeDetail.jsx";
+import AppLayout from "./views/AppLayout.jsx";
+import NotFound from "./views/NotFound.jsx";
+import RecipeIndex from "./views/RecipeIndex.jsx";
+import RecipeLayout from "./views/RecipeLayout.jsx";
+import About from "./views/About.jsx";
 
 /* ============================================
     SIMPLE ERROR BOUNDARY COMPONENT
@@ -59,14 +68,12 @@ class SimpleErrorBoundary extends React.Component {
    ============================================ */
 function App() {
     return (
-        <div className="container w-100">
-            <header className="bg-primary text-white text-center py-4 mb-4 w-100">
-                <h1 className="m-0">Recipe Display</h1>
-            </header>
-
-            <RecipeList />
-            <RecipeForm />
-        </div>
+        <SimpleErrorBoundary>
+            {/*
+               Nothing else is needed in here anymore, the RouterProvider
+               in our main.jsx handles rendering the routes for us.
+             */}
+        </SimpleErrorBoundary>
     );
 }
 

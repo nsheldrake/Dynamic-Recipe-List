@@ -2,6 +2,17 @@
 // Reusable component for displaying a single recipe as a Bootstrap card
 // This component is rendered by RecipeList
 
+// Convert "Bruce Wayne" --> "bruce-wayne"
+import {useNavigate} from "react-router-dom";
+
+function slugify(text) {
+    return String(text)
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+}
+
 //Layout notes:
 // - col-12 ensures full width on small screens
 // - col-md-6 and col-lg-4 shows 2 cards per row on medium screens
@@ -9,12 +20,31 @@
 // - w-100 forces the card to fill the column width
 // - h-100 ensures all cards maintain equal height
 function RecipeCard({recipe, colClass = "col-12 col-md-6 col-lg-4", toggleFavourite, favouriteRecipe}){
-    return(
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        //use the slug field NAME as the URL id
+        const slug = slugify(recipe.name);
+        navigate(`/recipes/${slug}`);
+    }
+
+    return (
         <div className={colClass}>
-            <div className="card w-100 h-100 shadow-sm">
+            <div
+                className="card h-100 shadow-sm"
+                role="button"
+                tabIndex={0}
+                onClick={handleClick}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleClick();
+                }}
+                style={{cursor: 'pointer'}}
+            >
+
                 <div className="card-body">
                     <h5 className="card-title">{recipe.name}</h5>
-                    <p className="card-subtitle mb-1 text-muted">
+                    <p className="card-subtitle mb-1">
                         <strong>Ingredients: </strong>{recipe.ingredients}
                     </p>
                     <p className="card-text text-muted small">
@@ -24,9 +54,11 @@ function RecipeCard({recipe, colClass = "col-12 col-md-6 col-lg-4", toggleFavour
                         {recipe.dateAdded}
                     </p>
                     <button
-                        onClick={() =>
-                            toggleFavourite(recipe.name)
-                        }
+                        onClick={(e) => {
+                            toggleFavourite(recipe.name);
+                            // stop navigation to detail page when clicking favourite button
+                            e.stopPropagation();
+                        }}
                         style={{
                             fontSize: '1.5rem',
                             padding: "1rem",

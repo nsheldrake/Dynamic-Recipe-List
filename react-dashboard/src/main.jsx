@@ -1,11 +1,51 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css' //This imports our Bootstrap css globally
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+import {
+    createBrowserRouter,
+    createRoutesFromElements, Route,
+    RouterProvider,
+} from 'react-router-dom';
+
+import AppLayout from './views/AppLayout.jsx';
+import Home from './views/Home.jsx';
+import RecipeLayout from './views/RecipeLayout.jsx';
+import RecipeIndex from './views/RecipeIndex.jsx';
+import RecipeDetail from './views/RecipeDetail.jsx';
+import Form from './views/Form.jsx';
+import About from './views/About.jsx';
+import NotFound from './views/NotFound.jsx';
+
+import { recipeLoader } from './utils/recipeLoader.js'; // NEW for 9.2
+
+import './index.css';
+
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <Route element={<AppLayout />}>
+            <Route index element={<Home />} />
+
+            {/* 9.2: recipes section with loader */}
+            <Route
+                path="recipes"
+                id="recipes"
+                element={<RecipeLayout />}
+                loader={recipeLoader}
+            >
+                <Route index element={<RecipeIndex />} />
+                <Route path=":id" element={<RecipeDetail />} />
+            </Route>
+
+            <Route path="form" element={<Form />} />
+            <Route path="about" element={<About />} />
+            <Route path="*" element={<NotFound />} />
+        </Route>
+    )
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+        <RouterProvider router={router} />
+    </React.StrictMode>
+);

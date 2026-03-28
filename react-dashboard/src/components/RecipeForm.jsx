@@ -9,6 +9,9 @@ import {useEffect, useRef, useState} from "react";
 import {validateRequired, validateEmail} from '../utils/validation.js'
 import {saveFormDraft, loadFormDraft, clearFormDraft} from "../utils/storage";
 
+import FormInput from './form/FormInput';
+import FormTextarea from './form/FormTextarea.jsx';
+
 function RecipeForm() {
 
     //Single state object for all form fields (cleaner)
@@ -58,6 +61,31 @@ function RecipeForm() {
             }
         };
     }, []);
+
+    /* -----------------------------------------------------
+    * FIELD VALIDATION FUNCTION
+    -------------------------------------------------------*/
+    const validateField = (name, value) => {
+
+        switch(name){
+            case 'name':
+                return validateRequired(name, value);
+            case 'email':
+                const requiredError = validateRequired('email', value);
+                if (requiredError) return requiredError;
+
+                if (!validator.isEmail(value)) {
+                    return 'Please enter a valid email address';
+                }
+
+                return validateEmail(value);
+            case 'message':
+                return validateRequired('message', value);
+
+            default:
+                return '';
+        }
+    };
 
 
     // Validation function - return true if valid, false otherwise
@@ -179,7 +207,7 @@ function RecipeForm() {
     };
 
     // Retry handler (only appears in error state)
-    const handeRetry = async () => {
+    const handleRetry = async () => {
         if(!lastAttempt) return;
 
         if (clearMessageTimeoutId.current){
@@ -227,61 +255,44 @@ function RecipeForm() {
             }}
         >
 
-            <h2>Submission Form</h2>
+            <h2>Contact Us</h2>
 
             { /* Name field*/ }
-            <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="name">Name:</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    style={{width: '100%', padding: '0.5rem', marginTop: '0.25rem'}}
-                />
-                {errors.name && <span style={{color: 'red', fontSize: '0.9rem'}}>{errors.name}</span>}
-            </div>
+            <FormInput
+                label="Name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                error={errors.name}
+            />
 
             { /* Email field*/ }
-            <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem'}}
-                />
-                {errors.email && <span style={{color: 'red', fontSize: '0.9rem'}}>{errors.email}</span>}
-            </div>
+            <FormInput
+                label="Email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                error={errors.email}
+            />
 
             { /* Ingredients field*/ }
-            <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="ingredients">Ingredients:</label>
-                <textarea
-                    id="ingredients"
-                    name="ingredients"
-                    value={formData.ingredients}
-                    onChange={handleChange}
-                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem'}}
-                />
-                {errors.ingredients && <span style={{color: 'red', fontSize: '0.9rem'}}>{errors.ingredients}</span>}
-            </div>
+            <FormTextarea
+                label="Ingredients"
+                name="ingredients"
+                value={formData.message}
+                onChange={handleChange}
+                error={errors.message}
+            />
 
-            { /* Instruction field*/ }
-            <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="instructions">Instructions:</label>
-                <textarea
-                    id="instructions"
-                    name="instructions"
-                    value={formData.instructions}
-                    onChange={handleChange}
-                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem'}}
-                />
-                {errors.instructions && <span style={{color: 'red', fontSize: '0.9rem'}}>{errors.instructions}</span>}
-            </div>
+            { /* Instructions field*/ }
+            <FormTextarea
+                label="Instructions"
+                name="instructions"
+                value={formData.message}
+                onChange={handleChange}
+                error={errors.message}
+            />
+
 
             { /*Submit button*/ }
             <button
@@ -299,6 +310,24 @@ function RecipeForm() {
                 {status === 'submitting' ? 'Sending...' : 'Submit Recipe'}
 
             </button>
+
+            {/* Retry button (only appears in error state)*/}
+            {status === 'error' && (
+                <button type="button"
+                        onClick={handleRetry}
+                        style={{
+                            marginLeft: '0.75rem',
+                            padding: '0.75rem 1.5rem',
+                            background: '#dc3545',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                        }}
+                >
+                    Retry
+                </button>
+            )}
+
 
             { /* Submission Feedback */ }
             {submitMessage && (
