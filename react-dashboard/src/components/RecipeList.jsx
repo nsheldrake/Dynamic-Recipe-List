@@ -26,40 +26,6 @@ function RecipeList({
                       onFilterChange,
                   }) {
 
-    // Favourites: stores favourite recipes
-    const [favourites, setFavourites] = useState([]);
-
-    // -------------------------------------------
-    // LOAD FAVOURITES
-    // -------------------------------------------
-    useEffect(() => {
-        const storedFavourites = loadFavourites();
-        if (storedFavourites) {
-            setFavourites(storedFavourites);
-        }
-    }, []);
-
-    // Reference: https://stackoverflow.com/questions/59291164/toggle-color-of-button-added-to-favorites-in-react
-    // I used this as a reference to create the functionality that allows me to toggle a recipe being a favourite or not
-    // Toggle functionality for favourite recipes
-    const toggleFavourite = (recipeName) => {
-        // Store updated favourites array
-        let updatedFavourites;
-        // If recipe is in the favourites array
-        if (favourites.includes(recipeName)) {
-            // Remove recipe from the favourites array
-            updatedFavourites = favourites.filter(name => name !== recipeName);
-            // Else
-        } else {
-            // Add recipe to the new favourites array
-            updatedFavourites = [...favourites, recipeName];
-        }
-        // Update favourite array live
-        setFavourites(updatedFavourites);
-        // Save the new favourites array to localstorage
-        saveFavourites(updatedFavourites);
-    };
-
     const searchValue = initialSearch;
     const search =  initialSearch.toLowerCase();
     const sortBy = initialSort;
@@ -160,19 +126,13 @@ function RecipeList({
 
             <div className="row g-4 justify-content-center">
                 {currentRecipes.length > 0 ? (
-                    currentRecipes.map((recipe, index) => {
-
-                        const {name, ingredients, instructions} = recipe;
-                        const favouriteRecipe =
-                            favourites.includes(recipe.name);
+                    currentRecipes.map((recipe) => {
 
                         return (
                             <RecipeCard
                                 key={recipe.name}
                                 recipe={recipe}
                                 colClass={colClass}
-                                toggleFavourite={toggleFavourite}
-                                favouriteRecipe={favouriteRecipe}
                             />
                         );
                     })

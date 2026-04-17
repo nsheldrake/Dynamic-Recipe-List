@@ -20,6 +20,7 @@ import NotFound from './views/NotFound.jsx';
 import { recipeLoader } from './utils/recipeLoader.js'; // NEW for 9.2
 
 import './index.css';
+import {FavouritesProvider} from "./context/FavouritesContext.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -46,6 +47,9 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        { /* Provide favourites context to the entire application */ }
+        <FavouritesProvider>
+            <RouterProvider router={router}/>
+        </FavouritesProvider>
     </React.StrictMode>
 );

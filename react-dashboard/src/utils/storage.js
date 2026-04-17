@@ -49,3 +49,7 @@ export function loadFavourites(useSession = false) {
     }
     return [];  // No draft, means empty object
 }
+
+export function clearFavourites(){
+    localStorage.removeItem('favouriteTeamMembers');
+}

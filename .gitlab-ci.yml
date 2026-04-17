@@ -1,0 +1,115 @@
+# .gitlab-ci.yml
+#
+# INFT2202 - Basic CI Pipeline for a React + Vite project
+#
+# Purpose:
+# This pipeline introduces Continuous Integration (CI)
+# using GitLab CI/CD.
+#
+# The React application itself is located in a subfolder:
+# week12/day2/react-dashboard
+#
+# Each job must first move into that directory before running commands.
+#
+# Pipeline stages:
+# 1. lint     -> checks code quality/style
+# 2. build    -> verifies the app can compile successfully
+# 3. security -> checks dependencies for known vulnerabilities
+#
+# Notes:
+# - This file belongs in the ROOT of the GitLab repository.
+# - Vercel handles deployment separately.
+# - GitLab CI is being used here for quality checks only.
+
+# Use an official Node.js
+image: node:20
+
+# Define the order of stages in the pipeline
+stages:
+  - lint
+  - build
+  - security
+
+# Optional variables for readability and reuse
+variables:
+  # Path to the actual React/Vite project inside the repository (adjust to your PATH)
+  PROJECT_DIR: "/react-dashboard"
+
+# Cache node_modules-related downloads to speed up repeated pipeline runs
+# This helps reduce install time between jobs/pipelines.
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - ${PROJECT_DIR}/node_modules/
+    - ${PROJECT_DIR}/.npm/
+
+# -----------------------------
+# LINT STAGE
+# -----------------------------
+# This job checks code quality/style.
+# It assumes the project already has a lint script in package.json,
+# for example:
+# "lint": "eslint ."
+lint-job:
+  stage: lint
+  script:
+    # Move into the React project folder
+    - cd "$PROJECT_DIR"
+
+    # Install dependencies exactly as defined in package-lock.json
+    - npm ci
+
+    # Run linting
+    - npm run lint
+  rules:
+    # Run on pushes and merge requests
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+# -----------------------------
+# BUILD STAGE
+# -----------------------------
+# This job verifies that the application can build successfully.
+# This is important because an app may "look fine" in the editor
+# but still fail during a production build.
+build-job:
+  stage: build
+  script:
+    # Move into the React project folder
+    - cd "$PROJECT_DIR"
+
+    # Install dependencies
+    - npm ci
+
+    # Run the production build
+    - npm run build
+  rules:
+    # Run on pushes and merge requests
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+# -----------------------------
+# SECURITY STAGE
+# -----------------------------
+# This job performs a simple dependency vulnerability check.
+# npm audit can sometimes report warnings students cannot fully fix,
+# so we allow this job to fail without failing the whole pipeline.
+#
+# This keeps the pipeline student-friendly while still introducing
+# the concept of security scanning.
+security-job:
+  stage: security
+  script:
+    # Move into the React project folder
+    - cd "$PROJECT_DIR"
+
+    # Install dependencies
+    - npm ci
+
+    # Run a dependency audit
+    - npm audit --audit-level=high
+  allow_failure: true
+  rules:
+    # Run on pushes and merge requests
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"

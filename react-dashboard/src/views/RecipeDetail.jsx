@@ -1,6 +1,6 @@
 import {Link, useNavigate, useParams, useRouteLoaderData, useSearchParams} from "react-router-dom";
 import {useEffect, useMemo, useState} from "react";
-
+import useFavourites from "../context/useFavourite.js";
 
 function slugify(text) {
     return String(text)
@@ -17,10 +17,13 @@ function RecipeDetail() {
     const recipes = useRouteLoaderData("recipes") ?? [];
     const activeTab = searchParams.get('tab') ?? 'overview';
 
+    const {favourites, toggleFavourite} = useFavourites();
+
     const recipe = useMemo( () => {
        return recipes.find((m) => slugify(m.name) === id);
     }, [recipes, id]);
 
+    const isFavourite = favourites.includes(id);
 
     if(!recipe){
         return(
@@ -43,8 +46,29 @@ function RecipeDetail() {
                     Go Back
                 </button>
 
-                <h2 className="card-title mb-1">{recipe.name}</h2>
-                <p className="text-muted mb-3">{recipe.ingredients}</p>
+                <div className="d-flex justify-content-between align-items-center gap-2">
+
+                    <div>
+                        <h2 className="card-title mb-1">{recipe.name}</h2>
+                        <p className="text-muted mb-3">{recipe.ingredients}</p>
+                    </div>
+
+                    <button
+                        type="button"
+                        className={`btn btn-sm ${isFavourite ? 'btn-warning' : 'btn-outline-secondary'}`}
+                        onClick={() => toggleFavourite(id)}
+                        style={{
+                            fontSize: '1.5rem',
+                            padding: "1rem",
+                            border: "1px solid black",
+                            borderColor: 'black',
+                            borderRadius: "4px",
+                            backgroundColor: isFavourite ? "#FF69B4" : "#D3D3D3"
+                        }}
+                    > ♡
+                    </button>
+                </div>
+
 
                 <button
                     className="btn btn-outline-secondary"

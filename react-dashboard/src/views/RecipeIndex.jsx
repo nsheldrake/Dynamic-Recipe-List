@@ -1,6 +1,7 @@
 import RecipeList from "../components/RecipeList.jsx";
 import {useRevalidator, useRouteLoaderData, useSearchParams} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
+import RecipeStats from "../components/RecipeStats.jsx";
 
 /**
  * Purpose: Acts as the entry point when users navigate to /team
@@ -70,6 +71,9 @@ function RecipeIndex(){
             {revalidator.state === 'loading' && (
                 <p className="text-muted small">Refreshing recipes ...</p>
             )}
+
+            {/* Team Dashboard Stats */}
+            <RecipeStats recipes={recipes} />
 
             <RecipeList
                initialRecipes={recipes}

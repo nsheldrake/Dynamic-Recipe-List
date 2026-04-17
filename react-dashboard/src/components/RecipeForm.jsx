@@ -6,24 +6,23 @@
 // - Loading, success, and error state (better UX experience)
 
 import {useEffect, useRef, useState} from "react";
-import {validateRequired, validateEmail} from '../utils/validation.js'
 import {saveFormDraft, loadFormDraft, clearFormDraft} from "../utils/storage";
-
 import FormInput from './form/FormInput';
 import FormTextarea from './form/FormTextarea.jsx';
+import useRecipeValidation from '../hooks/useRecipeValidation';
 
 function RecipeForm() {
 
     //Single state object for all form fields (cleaner)
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        ingredients: '',
-        instructions: '',
+    // Load saved draft immediately during initialization instead of inside useEffect
+    const [formData, setFormData] = useState(() => {
+        const draft = loadFormDraft(true);
+        return Object.keys(draft).length > 0
+            ? draft
+            : { name: '', email: '', ingredients: '', instructions: '' };
     });
 
-    //Error object: helps disable button (on errors), values for error messages
-    const [errors, setErrors] = useState({});
+    const {errors, validateForm, validateSingleField, clearErrors} = useRecipeValidation();
 
     //User-facing message after submission
     const [submitMessage, setSubmitMessage] = useState('');
@@ -39,16 +38,6 @@ function RecipeForm() {
     // Keep a reference to our timeout
     const clearMessageTimeoutId = useRef(null);
 
-    // ------------------------------------------------------
-    // LOAD SAVED DRAFT from localStorage
-    // ------------------------------------------------------
-    useEffect(() => {
-        const draft = loadFormDraft(useSession);
-        if(Object.keys(draft).length > 0) {
-            setFormData(draft);
-        }
-    }, []);     // run once on initial mount
-
     // -----------------------------------------------------
     // CLEANUP TIMERS ON UNMOUNT
     // If we set a timer (setTimeout) and the component unmounts before it fires
@@ -62,72 +51,14 @@ function RecipeForm() {
         };
     }, []);
 
-    /* -----------------------------------------------------
-    * FIELD VALIDATION FUNCTION
-    -------------------------------------------------------*/
-    const validateField = (name, value) => {
-
-        switch(name){
-            case 'name':
-                return validateRequired(name, value);
-            case 'email':
-                const requiredError = validateRequired('email', value);
-                if (requiredError) return requiredError;
-
-                if (!validator.isEmail(value)) {
-                    return 'Please enter a valid email address';
-                }
-
-                return validateEmail(value);
-            case 'message':
-                return validateRequired('message', value);
-
-            default:
-                return '';
-        }
-    };
-
-
-    // Validation function - return true if valid, false otherwise
-    // Called on submit
-    const validateForm = () => {
-        const newErrors = {};
-
-        newErrors.name = validateRequired('name', formData.name);
-        newErrors.email = validateRequired('email', formData.email) || validateEmail(formData.email);
-        newErrors.ingredients = validateRequired('ingredients', formData.ingredients);
-        newErrors.instructions = validateRequired('instructions', formData.instructions);
-
-        setErrors(newErrors);
-
-        //Form is valid only if no errors
-        // Object.keys(newErrors) get all field names (name, email, ingredients, instructions)
-        // filter(...) keeps only the fields that actually contain an error
-        // If the number of remaining errors is 0, the form is valid
-        return Object.keys(newErrors).filter(key => newErrors[key]).length === 0;
-    }
 
 
     const handleChange = (e) => {
-        const {name, value} = e.target;     // ES6 destructing
-
-        //Update the correct field in formData
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-
-        //Optional: clear error for this field as user types
-        if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }));
-        }
-
-        // Save draft to localStorage on every change
-        saveFormDraft({...formData, [name]: value}, useSession); // Use import ESM function
-
+        const {name, value} = e.target;
+        const updateFormData =  {...formData, [name]: value};
+        setFormData(updateFormData);
+        validateSingleField(name, value);
+        saveFormDraft(updateFormData, useSession);
     };
 
     // ----------------------------------------
@@ -170,7 +101,7 @@ function RecipeForm() {
         //Prevent page reload -- CRUCIAL in React!!
         e.preventDefault();
 
-        if (!validateForm()) {
+        if (!validateForm(formData)) {
             return; //Stop if form data is invalid
         }
 
@@ -192,7 +123,7 @@ function RecipeForm() {
 
             //Reset from after success
             setFormData( {name: '', email: '', ingredients: '', instructions: ''});
-            setErrors({});
+            clearErrors({});
 
             // Hide success message after 3 seconds
             clearMessageTimeoutId.current = setTimeout(() => {
@@ -224,7 +155,7 @@ function RecipeForm() {
 
             clearFormDraft(useSession);
             setFormData( {name: '', email: '', ingredients: '', instructions: ''});
-            setErrors({});
+            clearErrors({});
 
             clearMessageTimeoutId.current = setTimeout(() => {
                 setSubmitMessage('');
@@ -255,7 +186,7 @@ function RecipeForm() {
             }}
         >
 
-            <h2>Contact Us</h2>
+            <h2>Submit a Recipe</h2>
 
             { /* Name field*/ }
             <FormInput
@@ -279,18 +210,18 @@ function RecipeForm() {
             <FormTextarea
                 label="Ingredients"
                 name="ingredients"
-                value={formData.message}
+                value={formData.ingredients}
                 onChange={handleChange}
-                error={errors.message}
+                error={errors.ingredients}
             />
 
             { /* Instructions field*/ }
             <FormTextarea
                 label="Instructions"
                 name="instructions"
-                value={formData.message}
+                value={formData.instructions}
                 onChange={handleChange}
-                error={errors.message}
+                error={errors.instructions}
             />
 
 

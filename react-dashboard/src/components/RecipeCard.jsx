@@ -4,6 +4,7 @@
 
 // Convert "Bruce Wayne" --> "bruce-wayne"
 import {useNavigate} from "react-router-dom";
+import useFavourites from "../context/useFavourite.js";
 
 function slugify(text) {
     return String(text)
@@ -19,15 +20,28 @@ function slugify(text) {
 // - col-lg-4 shows 3 cards per row on large screens
 // - w-100 forces the card to fill the column width
 // - h-100 ensures all cards maintain equal height
-function RecipeCard({recipe, colClass = "col-12 col-md-6 col-lg-4", toggleFavourite, favouriteRecipe}){
+function RecipeCard({recipe, colClass = "col-12 col-md-6 col-lg-4"}){
 
     const navigate = useNavigate();
+
+    // Access shared favourites stated directly from Context
+    const {favourites, toggleFavourite} = useFavourites();
+
+    //Determine if this user profile team member is a favourite
+    const recipeSlug = slugify(recipe.name);
+    const isFavourite = favourites.includes(recipeSlug);
 
     const handleClick = () => {
         //use the slug field NAME as the URL id
         const slug = slugify(recipe.name);
         navigate(`/recipes/${slug}`);
     }
+
+    //Toggle favourite without navigating to the detail page
+    const handleFavouriteClick = (e) => {
+        e.stopPropagation();
+        toggleFavourite(recipeSlug);
+    };
 
     return (
         <div className={colClass}>
@@ -54,18 +68,16 @@ function RecipeCard({recipe, colClass = "col-12 col-md-6 col-lg-4", toggleFavour
                         {recipe.dateAdded}
                     </p>
                     <button
-                        onClick={(e) => {
-                            toggleFavourite(recipe.name);
-                            // stop navigation to detail page when clicking favourite button
-                            e.stopPropagation();
-                        }}
+                        onClick={handleFavouriteClick}
+                        aria-label={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
+                        title={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
                         style={{
                             fontSize: '1.5rem',
                             padding: "1rem",
                             border: "1px solid black",
                             borderColor: 'black',
                             borderRadius: "4px",
-                            backgroundColor: favouriteRecipe ? "#FF69B4" : "#D3D3D3"
+                            backgroundColor: isFavourite ? "#FF69B4" : "#D3D3D3"
                         }}
                     > ♡
                     </button>
