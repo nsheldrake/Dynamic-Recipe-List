@@ -33,7 +33,7 @@ stages:
 # Optional variables for readability and reuse
 variables:
   # Path to the actual React/Vite project inside the repository (adjust to your PATH)
-  PROJECT_DIR: "/react-dashboard"
+  PROJECT_DIR: "react-dashboard"
 
 # Cache node_modules-related downloads to speed up repeated pipeline runs
 # This helps reduce install time between jobs/pipelines.
